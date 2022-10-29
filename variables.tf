@@ -1,0 +1,2 @@
+variable "vaults" {}
+variable "naming" {}
