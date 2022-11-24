@@ -51,10 +51,10 @@ resource "azurerm_key_vault" "keyvault" {
     }
 
     content {
-      default_action             = each.value.default_action
-      bypass                     = each.value.bypass
-      ip_rules                   = try(each.value.ip_rules, [])
-      virtual_network_subnet_ids = try(each.value.subnet_ids, [])
+      default_action             = network_acls.value.default_action
+      bypass                     = network_acls.value.bypass
+      ip_rules                   = try(network_acls.value.ip_rules, [])
+      virtual_network_subnet_ids = try(network_acls.value.subnet_ids, [])
     }
   }
 }
