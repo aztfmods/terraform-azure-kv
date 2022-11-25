@@ -45,16 +45,17 @@ resource "azurerm_key_vault" "keyvault" {
   public_network_access_enabled   = try(each.value.enable.public_network_access, true)
   soft_delete_retention_days      = try(each.value.retention_in_days, null)
 
-  dynamic "network_acls" {
-    for_each = {
-      for k, v in try(each.value.network_acls, {}) : k => v
-    }
+  # dynamic "network_acls" {
+  #   for_each = var.vaults
+  #   # for_each = {
+  #   #   for k, v in try(each.value.network_acls, {}) : k => v
+  #   # }
 
-    content {
-      default_action             = network_acls.value.default_action
-      bypass                     = network_acls.value.bypass
-      ip_rules                   = try(network_acls.value.ip_rules, [])
-      virtual_network_subnet_ids = try(network_acls.value.subnet_ids, [])
-    }
-  }
+  #   content {
+  #     default_action             = each.value.network_acls.default_action
+  #     bypass                     = each.value.network_acls.bypass
+  #     ip_rules                   = try(each.value.network_acls.ip_rules, [])
+  #     virtual_network_subnet_ids = try(each.value.network_acls.subnet_ids, [])
+  #   }
+  # }
 }
