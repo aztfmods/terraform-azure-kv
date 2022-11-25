@@ -20,27 +20,27 @@ module "global" {
   }
 }
 
-module "network" {
-  source = "github.com/aztfmods/module-azurerm-vnet"
+# module "network" {
+#   source = "github.com/aztfmods/module-azurerm-vnet"
 
-  naming = {
-    company = local.naming.company
-    env     = local.naming.env
-    region  = local.naming.region
-  }
+#   naming = {
+#     company = local.naming.company
+#     env     = local.naming.env
+#     region  = local.naming.region
+#   }
 
-  vnets = {
-    demo = {
-      cidr          = ["10.19.0.0/16"]
-      location      = module.global.groups.vault.location
-      resourcegroup = module.global.groups.vault.name
-      subnets = {
-        sn1 = { cidr = ["10.19.1.0/24"], endpoints = ["Microsoft.KeyVault"] }
-      }
-    }
-  }
-  depends_on = [module.global]
-}
+#   vnets = {
+#     demo = {
+#       cidr          = ["10.19.0.0/16"]
+#       location      = module.global.groups.vault.location
+#       resourcegroup = module.global.groups.vault.name
+#       subnets = {
+#         sn1 = { cidr = ["10.19.1.0/24"], endpoints = ["Microsoft.KeyVault"] }
+#       }
+#     }
+#   }
+#   depends_on = [module.global]
+# }
 
 module "kv" {
   source = "../../"
@@ -58,13 +58,13 @@ module "kv" {
       sku               = "standard"
       retention_in_days = 7
 
-      network_acls = {
-        bypass         = "AzureServices"
-        default_action = "Deny"
-        ip_rules       = ["1.2.3.4"]
-        subnet_ids     = [module.network.subnets["demo.sn1"].id]
-      }
+      # network_acls = {
+      #   bypass         = "AzureServices"
+      #   default_action = "Deny"
+      #   ip_rules       = ["1.2.3.4"]
+      #   subnet_ids     = [module.network.subnets["demo.sn1"].id]
+      # }
     }
   }
-  depends_on = [module.global, module.network]
+  depends_on = [module.global]
 }
