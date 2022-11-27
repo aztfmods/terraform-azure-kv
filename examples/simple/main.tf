@@ -59,12 +59,8 @@ module "kv" {
       retention_in_days = 7
 
       access_policy = {
-        admins = {
+        admin = {
           groups = [ "aad-group-1" ]
-        }
-
-        reader = {
-          groups = [ "aad-group-2" ]
         }
       }
 

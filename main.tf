@@ -60,6 +60,10 @@ resource "azurerm_key_vault" "keyvault" {
   # }
 }
 
+#----------------------------------------------------------------------------------------
+# existing aad groups
+#----------------------------------------------------------------------------------------
+
 data "azuread_group" "admins" {
   for_each = {
     for pol in local.access_admin : "${pol.vault_key}.${pol.pol_key}" => pol
@@ -70,16 +74,12 @@ data "azuread_group" "admins" {
 
 data "azuread_group" "readers" {
   for_each = {
-    for pol in local.access_admin : "${pol.vault_key}.${pol.pol_key}" => pol
+    for pol in local.access_reader : "${pol.vault_key}.${pol.pol_key}" => pol
   }
 
   display_name = each.value.display_name
 }
 
-# data "azuread_service_principal" "example" {
-#   display_name = "my-awesome-application"
-# }
-//join(", ", ["foo", "bar", "baz"])
 #----------------------------------------------------------------------------------------
 # access policy admins
 #----------------------------------------------------------------------------------------
@@ -91,7 +91,10 @@ resource "azurerm_key_vault_access_policy" "admin_policy" {
 
   key_vault_id = each.value.key_vault_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = join("", [data.azuread_group.admins[each.key].object_id, data.azurerm_client_config.current.object_id])
+  # object_id    = each.value.display_name != null ? data.azuread_group.admins[each.key].object_id : data.azuread_service_principal.spn[each.key].object_id
+  #object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azuread_service_principal.spn[each.key].object_id
+  object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azurerm_client_config.current.object_id
+
 
   key_permissions = [
     "Backup",
@@ -154,7 +157,7 @@ resource "azurerm_key_vault_access_policy" "readers_policy" {
 
   key_vault_id = each.value.key_vault_id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azuread_group.readers[each.key].object_id
+  object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azurerm_client_config.current.object_id
 
   key_permissions = [
     "Get",
