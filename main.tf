@@ -41,7 +41,7 @@ resource "azurerm_key_vault" "keyvault" {
   enabled_for_disk_encryption     = try(each.value.enable.disk_encryption, true)
   enabled_for_template_deployment = try(each.value.enable.template_deployment, true)
   purge_protection_enabled        = try(each.value.enable.purge_protection, false)
-  enable_rbac_authorization       = try(each.value.enable.rbac_auth, true)
+  enable_rbac_authorization       = try(each.value.enable.rbac_auth, false)
   public_network_access_enabled   = try(each.value.enable.public_network_access, true)
   soft_delete_retention_days      = try(each.value.retention_in_days, null)
 
@@ -58,4 +58,38 @@ resource "azurerm_key_vault" "keyvault" {
   #     virtual_network_subnet_ids = try(each.value.network_acls.subnet_ids, [])
   #   }
   # }
+}
+
+#----------------------------------------------------------------------------------------
+# access policy
+#----------------------------------------------------------------------------------------
+
+resource "azurerm_key_vault_access_policy" "policy" {
+  for_each = var.vaults
+
+  key_vault_id = azurerm_key_vault.keyvault[each.key].id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  key_permissions = [
+    "Backup", "Create", "Decrypt", "Delete",
+    "Encrypt", "Get", "Import", "List",
+    "Purge", "Recover", "Restore", "Sign",
+    "UnwrapKey", "Update", "Verify", "WrapKey",
+  ]
+
+  secret_permissions = [
+    "Backup", "Delete", "Get", "List",
+    "Purge", "Recover", "Restore",
+    "Set",
+  ]
+
+  certificate_permissions = [
+    "Backup", "Create", "Delete",
+    "DeleteIssuers", "Get", "GetIssuers",
+    "Import", "List", "ListIssuers",
+    "ManageContacts", "ManageIssuers",
+    "Purge", "Recover", "Restore",
+    "SetIssuers", "Update",
+  ]
 }
