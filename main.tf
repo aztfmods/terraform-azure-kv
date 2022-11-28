@@ -61,116 +61,35 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 #----------------------------------------------------------------------------------------
-# existing aad groups
+# access policy
 #----------------------------------------------------------------------------------------
 
-data "azuread_group" "admins" {
-  for_each = {
-    for pol in local.access_admin : "${pol.vault_key}.${pol.pol_key}" => pol
-  }
+resource "azurerm_key_vault_access_policy" "policy" {
+  for_each = var.vaults
 
-  display_name = each.value.display_name
-}
-
-data "azuread_group" "readers" {
-  for_each = {
-    for pol in local.access_reader : "${pol.vault_key}.${pol.pol_key}" => pol
-  }
-
-  display_name = each.value.display_name
-}
-
-#----------------------------------------------------------------------------------------
-# access policy admins
-#----------------------------------------------------------------------------------------
-
-resource "azurerm_key_vault_access_policy" "admin_policy" {
-  for_each = {
-    for pol in local.access_admin : "${pol.vault_key}.${pol.pol_key}" => pol
-  }
-
-  key_vault_id = each.value.key_vault_id
+  key_vault_id = azurerm_key_vault.keyvault[each.key].id
   tenant_id    = data.azurerm_client_config.current.tenant_id
-  # object_id    = each.value.display_name != null ? data.azuread_group.admins[each.key].object_id : data.azuread_service_principal.spn[each.key].object_id
-  #object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azuread_service_principal.spn[each.key].object_id
-  object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azurerm_client_config.current.object_id
-
+  object_id    = data.azurerm_client_config.current.object_id
 
   key_permissions = [
-    "Backup",
-    "Create",
-    "Decrypt",
-    "Delete",
-    "Encrypt",
-    "Get",
-    "Import",
-    "List",
-    "Purge",
-    "Recover",
-    "Restore",
-    "Sign",
-    "UnwrapKey",
-    "Update",
-    "Verify",
-    "WrapKey",
+    "Backup", "Create", "Decrypt", "Delete",
+    "Encrypt", "Get", "Import", "List",
+    "Purge", "Recover", "Restore", "Sign",
+    "UnwrapKey", "Update", "Verify", "WrapKey",
   ]
 
   secret_permissions = [
-    "Backup",
-    "Delete",
-    "Get",
-    "List",
-    "Purge",
-    "Recover",
-    "Restore",
+    "Backup", "Delete", "Get", "List",
+    "Purge", "Recover", "Restore",
     "Set",
   ]
 
   certificate_permissions = [
-    "Backup",
-    "Create",
-    "Delete",
-    "DeleteIssuers",
-    "Get",
-    "GetIssuers",
-    "Import",
-    "List",
-    "ListIssuers",
-    "ManageContacts",
-    "ManageIssuers",
-    "Purge",
-    "Recover",
-    "Restore",
-    "SetIssuers",
-    "Update",
-  ]
-}
-
-#----------------------------------------------------------------------------------------
-# access policy readers
-#----------------------------------------------------------------------------------------
-
-resource "azurerm_key_vault_access_policy" "readers_policy" {
-  for_each = {
-    for pol in local.access_reader : "${pol.vault_key}.${pol.pol_key}" => pol
-  }
-
-  key_vault_id = each.value.key_vault_id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = each.value.grant_access_to_groups == true ? data.azuread_group.admins[each.key].object_id : data.azurerm_client_config.current.object_id
-
-  key_permissions = [
-    "Get",
-    "List",
-  ]
-
-  secret_permissions = [
-    "Get",
-    "List",
-  ]
-
-  certificate_permissions = [
-    "Get",
-    "List",
+    "Backup", "Create", "Delete",
+    "DeleteIssuers", "Get", "GetIssuers",
+    "Import", "List", "ListIssuers",
+    "ManageContacts", "ManageIssuers",
+    "Purge", "Recover", "Restore",
+    "SetIssuers", "Update",
   ]
 }

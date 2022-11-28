@@ -58,12 +58,6 @@ module "kv" {
       sku               = "standard"
       retention_in_days = 7
 
-      access_policy = {
-        admin = {
-          groups = [ "aad-group-1" ]
-        }
-      }
-
       # network_acls = {
       #   bypass         = "AzureServices"
       #   default_action = "Deny"
