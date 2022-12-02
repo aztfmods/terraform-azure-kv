@@ -2,6 +2,6 @@ output "vaults" {
   value = azurerm_key_vault.keyvault
 }
 
-output "keys" {
+output "kv_keys" {
   value = azurerm_key_vault_key.kv_keys
 }
