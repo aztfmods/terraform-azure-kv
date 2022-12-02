@@ -98,7 +98,7 @@ resource "azurerm_key_vault_access_policy" "policy" {
 # keyvault keys
 #----------------------------------------------------------------------------------------
 
-resource "azurerm_key_vault_key" "keys" {
+resource "azurerm_key_vault_key" "kv_keys" {
   for_each = {
     for key in local.keys : "${key.kv_key}.${key.k_key}" => key
   }

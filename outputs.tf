@@ -3,9 +3,5 @@ output "vaults" {
 }
 
 output "keys" {
-  value = azurerm_key_vault_key.keys
-}
-
-output "merged_keys" {
-  value = values(azurerm_key_vault_key.keys)[*].id
+  value = azurerm_key_vault_key.kv_keys
 }
