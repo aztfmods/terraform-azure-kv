@@ -7,6 +7,7 @@ Terraform module which creates keyvault resources on Azure.
 The below features and integrations are made available:
 
 - multiple keyvaults
+- [keys](examples/keys/main.tf) support
 - [terratest](https://terratest.gruntwork.io) is used to validate different integrations
 
 The below examples shows the usage when consuming the module:
@@ -35,6 +36,36 @@ module "kv" {
 }
 ```
 
+## Usage: keys
+
+module "kv" {
+  source = "../../"
+
+  naming = {
+    company = local.naming.company
+    env     = local.naming.env
+    region  = local.naming.region
+  }
+
+  vaults = {
+    demo = {
+      location          = module.global.groups.vault.location
+      resourcegroup     = module.global.groups.vault.name
+      sku               = "standard"
+      retention_in_days = 7
+
+      keys = {
+        demo = {
+          key_type = "RSA"
+          key_size = 2048
+          key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+        }
+      }
+    }
+  }
+  depends_on = [module.global]
+}
+
 ## Resources
 
 | Name | Type |
@@ -42,6 +73,7 @@ module "kv" {
 | [azurerm_key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
 | [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [azurerm_key_vault_access_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
+| [azurerm_key_vault_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
 
 ## Data Sources
 
@@ -55,6 +87,13 @@ module "kv" {
 | :-- | :-- | :-- | :-- |
 | `vaults` | describes key vault related configuration | object | yes |
 | `naming` | contains naming convention | string | yes |
+
+## Outputs
+
+| Name | Description |
+| :-- | :-- |
+| `vaults` | contains all key vault config |
+| `vault_keys` | contains all keyvault keys |
 
 ## Authors
 
