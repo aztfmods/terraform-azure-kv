@@ -38,6 +38,7 @@ module "kv" {
 
 ## Usage: keys
 
+```hcl
 module "kv" {
   source = "../../"
 
@@ -65,6 +66,7 @@ module "kv" {
   }
   depends_on = [module.global]
 }
+```
 
 ## Resources
 
