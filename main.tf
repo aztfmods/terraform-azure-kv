@@ -93,3 +93,25 @@ resource "azurerm_key_vault_access_policy" "policy" {
     "SetIssuers", "Update",
   ]
 }
+
+#----------------------------------------------------------------------------------------
+# keyvault keys
+#----------------------------------------------------------------------------------------
+
+resource "azurerm_key_vault_key" "generated" {
+  for_each = var.vaults
+
+  name         = "key${var.naming.company}${each.key}${var.naming.env}${var.naming.region}${random_string.random[each.key].result}"
+  key_vault_id = azurerm_key_vault.keyvault[each.key].id
+  key_type     = "RSA"
+  key_size     = 2048
+
+  key_opts = [
+    "decrypt",
+    "encrypt",
+    "sign",
+    "unwrapKey",
+    "verify",
+    "wrapKey",
+  ]
+}
