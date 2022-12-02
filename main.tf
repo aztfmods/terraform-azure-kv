@@ -98,20 +98,23 @@ resource "azurerm_key_vault_access_policy" "policy" {
 # keyvault keys
 #----------------------------------------------------------------------------------------
 
-resource "azurerm_key_vault_key" "generated" {
-  for_each = var.vaults
+resource "azurerm_key_vault_key" "keys" {
+  for_each = {
+    for key in local.keys : "${key.kv_key}.${key.k_key}" => key
+  }
 
-  name         = "key${var.naming.company}${each.key}${var.naming.env}${var.naming.region}${random_string.random[each.key].result}"
-  key_vault_id = azurerm_key_vault.keyvault[each.key].id
-  key_type     = "RSA"
-  key_size     = 2048
+  name            = each.value.name
+  key_vault_id    = each.value.key_vault_id
+  key_type        = each.value.key_type
+  key_size        = each.value.key_size
+  key_opts        = each.value.key_opts
+  curve           = each.value.curve
+  not_before_date = each.value.not_before_date
+  expiration_date = each.value.expiration_date
 
-  key_opts = [
-    "decrypt",
-    "encrypt",
-    "sign",
-    "unwrapKey",
-    "verify",
-    "wrapKey",
+
+  #because of: Status=403 Code="Forbidden" Message="The user, group does not have keys get permission on key vault
+  depends_on = [
+    azurerm_key_vault_access_policy.policy
   ]
 }

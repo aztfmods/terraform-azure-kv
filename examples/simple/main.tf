@@ -53,10 +53,9 @@ module "kv" {
 
   vaults = {
     demo = {
-      location          = module.global.groups.vault.location
-      resourcegroup     = module.global.groups.vault.name
-      sku               = "standard"
-      retention_in_days = 7
+      location      = module.global.groups.vault.location
+      resourcegroup = module.global.groups.vault.name
+      sku           = "standard"
 
       # network_acls = {
       #   bypass         = "AzureServices"
