@@ -72,14 +72,14 @@ resource "azurerm_role_assignment" "current" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-resource "azurerm_role_assignment" "rol" {
-  for_each = var.vaults
+# resource "azurerm_role_assignment" "rol" {
+#   for_each = var.vaults
 
-  scope                = azurerm_key_vault.keyvault[each.key].id
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = each.value.principal_id
-  # principal_id         = azurerm_user_assigned_identity.mi[each.key].principal_id
-}
+#   scope                = azurerm_key_vault.keyvault[each.key].id
+#   role_definition_name = "Key Vault Administrator"
+#   principal_id         = each.value.principal_id
+#   # principal_id         = azurerm_user_assigned_identity.mi[each.key].principal_id
+# }
 
 #----------------------------------------------------------------------------------------
 # keyvault keys
