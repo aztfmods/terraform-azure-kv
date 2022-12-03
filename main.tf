@@ -119,10 +119,4 @@ resource "azurerm_key_vault_key" "kv_keys" {
   curve           = each.value.curve
   not_before_date = each.value.not_before_date
   expiration_date = each.value.expiration_date
-
-
-  #because of: Status=403 Code="Forbidden" Message="The user, group does not have keys get permission on key vault
-  depends_on = [
-    azurerm_key_vault_access_policy.policy
-  ]
 }
