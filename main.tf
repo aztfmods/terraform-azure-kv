@@ -61,7 +61,7 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 #----------------------------------------------------------------------------------------
-# access policy
+# role assignments
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_role_assignment" "current" {
@@ -72,35 +72,14 @@ resource "azurerm_role_assignment" "current" {
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-# resource "azurerm_key_vault_access_policy" "policy" {
-#   for_each = var.vaults
+resource "azurerm_role_assignment" "rol" {
+  for_each = var.vaults
 
-#   key_vault_id = azurerm_key_vault.keyvault[each.key].id
-#   tenant_id    = data.azurerm_client_config.current.tenant_id
-#   object_id    = data.azurerm_client_config.current.object_id
-
-#   key_permissions = [
-#     "Backup", "Create", "Decrypt", "Delete",
-#     "Encrypt", "Get", "Import", "List",
-#     "Purge", "Recover", "Restore", "Sign",
-#     "UnwrapKey", "Update", "Verify", "WrapKey",
-#   ]
-
-#   secret_permissions = [
-#     "Backup", "Delete", "Get", "List",
-#     "Purge", "Recover", "Restore",
-#     "Set",
-#   ]
-
-#   certificate_permissions = [
-#     "Backup", "Create", "Delete",
-#     "DeleteIssuers", "Get", "GetIssuers",
-#     "Import", "List", "ListIssuers",
-#     "ManageContacts", "ManageIssuers",
-#     "Purge", "Recover", "Restore",
-#     "SetIssuers", "Update",
-#   ]
-# }
+  scope                = azurerm_key_vault.keyvault[each.key].id
+  role_definition_name = "Key Vault Administrator"
+  principal_id         = each.value.principal_id
+  # principal_id         = azurerm_user_assigned_identity.mi[each.key].principal_id
+}
 
 #----------------------------------------------------------------------------------------
 # keyvault keys
