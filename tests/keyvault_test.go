@@ -12,7 +12,8 @@ func TestApplyNoError(t *testing.T) {
 	tests := []string{
 		//"../examples/simple",
 		//"../examples/keys",
-		"../examples/secrets",
+		//"../examples/secrets",
+		"../examples/certs",
 	}
 
 	for _, test := range tests {
