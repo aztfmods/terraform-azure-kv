@@ -17,3 +17,23 @@ locals {
     ]
   ])
 }
+
+locals {
+  secrets = flatten([
+    for kv_key, kv in var.vaults : [
+      for secret_key, secret in try(kv.secrets, {}) : {
+
+        kv_key       = kv_key
+        secret_key   = secret_key
+        name         = secret_key
+        length       = secret.length
+        special      = try(secret.special, true)
+        min_lower    = try(secret.min_lower, 5)
+        min_upper    = try(secret.min_upper, 7)
+        min_special  = try(secret.min_special, 4)
+        min_numeric  = try(secret.min_numeric, 5)
+        key_vault_id = azurerm_key_vault.keyvault[kv_key].id
+      }
+    ]
+  ])
+}

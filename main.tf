@@ -94,3 +94,34 @@ resource "azurerm_key_vault_key" "kv_keys" {
     azurerm_role_assignment.current
   ]
 }
+
+#----------------------------------------------------------------------------------------
+# secrets
+#----------------------------------------------------------------------------------------
+
+resource "random_password" "password" {
+  for_each = {
+    for secret in local.secrets : "${secret.kv_key}.${secret.secret_key}" => secret
+  }
+
+  length      = each.value.length
+  special     = each.value.special
+  min_lower   = each.value.min_lower
+  min_upper   = each.value.min_upper
+  min_special = each.value.min_special
+  min_numeric = each.value.min_numeric
+}
+
+resource "azurerm_key_vault_secret" "secret" {
+  for_each = {
+    for secret in local.secrets : "${secret.kv_key}.${secret.secret_key}" => secret
+  }
+
+  name         = each.value.name
+  value        = random_password.password[each.key].result
+  key_vault_id = each.value.key_vault_id
+
+  depends_on = [
+    azurerm_role_assignment.current
+  ]
+}
