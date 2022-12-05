@@ -39,12 +39,9 @@ module "kv" {
         rbac_auth = true
       }
 
-      keys = {
-        demo = {
-          key_type = "RSA"
-          key_size = 2048
-          key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
-        }
+      secrets = {
+        example1 = { length = 24 }
+        example2 = { length = 24, special = false }
       }
     }
   }
