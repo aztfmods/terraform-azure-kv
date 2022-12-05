@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.0.0...v1.1.0) (2022-12-05)
+
+
+### Features
+
+* add azurerm_key_vault_secret support ([#18](https://github.com/aztfmods/module-azurerm-kv/issues/18)) ([53105a3](https://github.com/aztfmods/module-azurerm-kv/commit/53105a30706a6da025266c9d948b94c3e7673d0a))
+
 ## 1.0.0 (2022-12-02)
 
 
