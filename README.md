@@ -7,7 +7,7 @@ Terraform module which creates keyvault resources on Azure.
 The below features and integrations are made available:
 
 - multiple keyvaults
-- [keys](examples/keys/main.tf), [secrets](examples/secrets/main.tf) support
+- [keys](examples/keys/main.tf), [secrets](examples/secrets/main.tf), and [certs](examples/certs/main.tf) support
 - [terratest](https://terratest.gruntwork.io) is used to validate different integrations
 
 The below examples shows the usage when consuming the module:
@@ -93,6 +93,38 @@ module "kv" {
       secrets = {
         example1 = { length = 24 }
         example2 = { length = 24, special = false }
+      }
+    }
+  }
+  depends_on = [module.global]
+}
+```
+
+## Usage: certs
+
+```hcl
+module "kv" {
+  source = "../../"
+
+  naming = {
+    company = local.naming.company
+    env     = local.naming.env
+    region  = local.naming.region
+  }
+
+  vaults = {
+    demo = {
+      location      = module.global.groups.vault.location
+      resourcegroup = module.global.groups.vault.name
+      sku           = "standard"
+
+      enable = {
+        rbac_auth = true
+      }
+
+      certs = {
+        demo = {
+          issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true }
       }
     }
   }

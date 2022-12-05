@@ -37,3 +37,25 @@ locals {
     ]
   ])
 }
+
+locals {
+  certs = flatten([
+    for kv_key, kv in var.vaults : [
+      for cert_key, cert in try(kv.certs, {}) : {
+
+        kv_key             = kv_key
+        cert_key           = cert_key
+        name               = cert_key
+        issuer             = cert.issuer
+        exportable         = cert.exportable
+        key_type           = try(cert.key_type, "RSA")
+        key_size           = try(cert.key_size, "2048")
+        reuse_key          = try(cert.reuse_key, false)
+        content_type       = try(cert.content_type, "application/x-pkcs12")
+        subject            = cert.subject
+        validity_in_months = cert.validity_in_months
+        key_vault_id       = azurerm_key_vault.keyvault[kv_key].id
+      }
+    ]
+  ])
+}

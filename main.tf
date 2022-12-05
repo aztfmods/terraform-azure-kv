@@ -73,7 +73,7 @@ resource "azurerm_role_assignment" "current" {
 }
 
 #----------------------------------------------------------------------------------------
-# keyvault keys
+# keys
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_key_vault_key" "kv_keys" {
@@ -121,6 +121,49 @@ resource "azurerm_key_vault_secret" "secret" {
   value        = random_password.password[each.key].result
   key_vault_id = each.value.key_vault_id
 
+  depends_on = [
+    azurerm_role_assignment.current
+  ]
+}
+
+# ----------------------------------------------------------------------------------------
+# certificates
+# ----------------------------------------------------------------------------------------
+
+resource "azurerm_key_vault_certificate" "cert" {
+  for_each = {
+    for cert in local.certs : "${cert.kv_key}.${cert.cert_key}" => cert
+  }
+
+  name         = each.value.name
+  key_vault_id = each.value.key_vault_id
+
+  certificate_policy {
+    issuer_parameters {
+      name = each.value.issuer
+    }
+    key_properties {
+      exportable = each.value.issuer == "Self" ? true : false
+      key_type   = each.value.key_type
+      key_size   = each.value.key_size
+      reuse_key  = each.value.reuse_key
+    }
+    secret_properties {
+      content_type = each.value.content_type
+    }
+    x509_certificate_properties {
+      subject            = each.value.subject
+      validity_in_months = each.value.validity_in_months
+      key_usage = [
+        "cRLSign",
+        "dataEncipherment",
+        "digitalSignature",
+        "keyAgreement",
+        "keyCertSign",
+        "keyEncipherment",
+      ]
+    }
+  }
   depends_on = [
     azurerm_role_assignment.current
   ]
