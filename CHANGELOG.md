@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.2.0...v1.3.0) (2022-12-06)
+
+
+### Features
+
+* small refactor naming convention ([#23](https://github.com/aztfmods/module-azurerm-kv/issues/23)) ([fa1ca1f](https://github.com/aztfmods/module-azurerm-kv/commit/fa1ca1fbb2f493a1c9efd030ec8f4d0b443d9287))
+
 ## [1.2.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.1.0...v1.2.0) (2022-12-05)
 
 
