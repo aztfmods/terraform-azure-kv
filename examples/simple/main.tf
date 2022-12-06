@@ -17,9 +17,9 @@ module "global" {
 # module "network" {
 #   source = "github.com/aztfmods/module-azurerm-vnet"
 
-  # company = module.global.company
-  # env     = module.global.env
-  # region  = module.global.region
+# company = module.global.company
+# env     = module.global.env
+# region  = module.global.region
 
 #   vnets = {
 #     demo = {
