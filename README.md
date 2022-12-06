@@ -18,16 +18,14 @@ The below examples shows the usage when consuming the module:
 module "kv" {
   source = "../../"
 
-  naming = {
-    company = local.naming.company
-    env     = local.naming.env
-    region  = local.naming.region
-  }
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
 
   vaults = {
     demo = {
-      location          = module.global.groups.vault.location
-      resourcegroup     = module.global.groups.vault.name
+      location          = module.global.groups.demo.location
+      resourcegroup     = module.global.groups.demo.name
       sku               = "standard"
       retention_in_days = 7
     }
@@ -42,16 +40,14 @@ module "kv" {
 module "kv" {
   source = "../../"
 
-  naming = {
-    company = local.naming.company
-    env     = local.naming.env
-    region  = local.naming.region
-  }
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
 
   vaults = {
     demo = {
-      location          = module.global.groups.vault.location
-      resourcegroup     = module.global.groups.vault.name
+      location          = module.global.groups.demo.location
+      resourcegroup     = module.global.groups.demo.name
       sku               = "standard"
       retention_in_days = 7
 
@@ -74,16 +70,14 @@ module "kv" {
 module "kv" {
   source = "../../"
 
-  naming = {
-    company = local.naming.company
-    env     = local.naming.env
-    region  = local.naming.region
-  }
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
 
   vaults = {
     demo = {
-      location      = module.global.groups.vault.location
-      resourcegroup = module.global.groups.vault.name
+      location      = module.global.groups.demo.location
+      resourcegroup = module.global.groups.demo.name
       sku           = "standard"
 
       enable = {
@@ -106,16 +100,14 @@ module "kv" {
 module "kv" {
   source = "../../"
 
-  naming = {
-    company = local.naming.company
-    env     = local.naming.env
-    region  = local.naming.region
-  }
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
 
   vaults = {
     demo = {
-      location      = module.global.groups.vault.location
-      resourcegroup = module.global.groups.vault.name
+      location      = module.global.groups.demo.location
+      resourcegroup = module.global.groups.demo.name
       sku           = "standard"
 
       enable = {
@@ -139,7 +131,6 @@ module "kv" {
 | [azurerm_key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
 | [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
-| [azurerm_key_vault_access_policy](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_access_policy) | resource |
 | [azurerm_key_vault_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
 | [azurerm_key_vault_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 
@@ -155,7 +146,9 @@ module "kv" {
 | Name | Description | Type | Required |
 | :-- | :-- | :-- | :-- |
 | `vaults` | describes key vault related configuration | object | yes |
-| `naming` | contains naming convention | string | yes |
+| `company` | contains the company name used, for naming convention  | string | yes |
+| `region` | contains the shortname of the region, used for naming convention  | string | yes |
+| `env` | contains shortname of the environment used for naming convention  | string | yes |
 
 ## Outputs
 

@@ -31,7 +31,7 @@ resource "random_string" "random" {
 resource "azurerm_key_vault" "keyvault" {
   for_each = var.vaults
 
-  name                = "kv${var.naming.company}${each.key}${var.naming.env}${var.naming.region}${random_string.random[each.key].result}"
+  name                = "kv${var.company}${each.key}${var.env}${var.region}${random_string.random[each.key].result}"
   resource_group_name = data.azurerm_resource_group.rg[each.key].name
   location            = data.azurerm_resource_group.rg[each.key].location
   tenant_id           = data.azurerm_client_config.current.tenant_id

@@ -10,10 +10,10 @@ func TestApplyNoError(t *testing.T) {
 	t.Parallel()
 
 	tests := []string{
-		//"../examples/simple",
+		"../examples/simple",
 		//"../examples/keys",
 		//"../examples/secrets",
-		"../examples/certs",
+		// "../examples/certs",
 	}
 
 	for _, test := range tests {
