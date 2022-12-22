@@ -1,4 +1,22 @@
 locals {
+  issuer = flatten([
+    for kv_key, kv in var.vaults : [
+      for issuer_key, issuer in try(kv.issuer, {}) : {
+
+        kv_key        = kv_key
+        issuer_key    = issuer_key
+        name          = "issuer-${var.company}-${issuer_key}-${var.env}-${var.region}"
+        key_vault_id  = azurerm_key_vault.keyvault[kv_key].id
+        provider_name = issuer.provider_name
+        account_id    = try(issuer.account_id, null)
+        password      = try(issuer.password, null)
+        org_id        = try(issuer.org_id, null)
+      }
+    ]
+  ])
+}
+
+locals {
   keys = flatten([
     for kv_key, kv in var.vaults : [
       for k_key, k in try(kv.keys, {}) : {
