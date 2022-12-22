@@ -1,4 +1,5 @@
 ![example workflow](https://github.com/aztfmods/module-azurerm-kv/actions/workflows/validate.yml/badge.svg)
+![example workflow](https://img.shields.io/github/v/release/aztfmods/module-azurerm-kv)
 
 # Keyvault
 
@@ -9,6 +10,7 @@ The below features and integrations are made available:
 - multiple keyvaults
 - [keys](examples/keys/main.tf), [secrets](examples/secrets/main.tf), [certs](examples/certs/main.tf) support
 - [terratest](https://terratest.gruntwork.io) is used to validate different integrations
+- [diagnostic](examples/diagnostic-settings/main.tf) logs integration
 
 The below examples shows the usage when consuming the module:
 
@@ -156,6 +158,7 @@ module "kv" {
 | :-- | :-- |
 | `vaults` | contains all key vault config |
 | `vault_keys` | contains all keyvault keys |
+| `merged_ids` | contains all resource id's specified within the module |
 
 ## Authors
 
@@ -164,3 +167,8 @@ Module is maintained by [Dennis Kool](https://github.com/dkooll) with help from 
 ## License
 
 MIT Licensed. See [LICENSE](https://github.com/aztfmods/module-azurerm-kv/blob/main/LICENSE) for full details.
+
+## References
+
+- [Keyvault Documentation - Microsoft docs](https://learn.microsoft.com/en-us/azure/key-vault/)
+- [Keyvault Rest Api - Microsoft docs](https://learn.microsoft.com/en-us/rest/api/keyvault/)
