@@ -35,6 +35,10 @@ module "kv" {
         demo = {
         issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true }
       }
+
+      contacts = {
+        admin = { email = "dennis.kool@cloudnation.nl" }
+      }
     }
   }
   depends_on = [module.global]

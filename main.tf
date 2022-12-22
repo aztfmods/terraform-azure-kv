@@ -73,7 +73,7 @@ resource "azurerm_role_assignment" "current" {
 }
 
 #----------------------------------------------------------------------------------------
-# certificate issuer
+# certificate issuers
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_key_vault_certificate_issuer" "issuer" {
@@ -87,6 +87,34 @@ resource "azurerm_key_vault_certificate_issuer" "issuer" {
   provider_name = each.value.provider_name
   account_id    = each.value.account_id
   password      = each.value.password //pat certificate authority
+
+  depends_on = [
+    azurerm_role_assignment.current
+  ]
+}
+
+#----------------------------------------------------------------------------------------
+# certificate contacts
+#----------------------------------------------------------------------------------------
+
+resource "azurerm_key_vault_certificate_contacts" "example" {
+  for_each = {
+    for k, v in var.vaults : k => v
+  }
+
+  key_vault_id = azurerm_key_vault.keyvault[each.key].id
+
+  dynamic "contact" {
+    for_each = {
+      for k, v in try(each.value.contacts, {}) : k => v
+    }
+
+    content {
+      email = contact.value.email
+      name  = try(contact.value.name, null)
+      phone = try(contact.value.phone, null)
+    }
+  }
 
   depends_on = [
     azurerm_role_assignment.current
