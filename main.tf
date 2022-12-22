@@ -73,6 +73,27 @@ resource "azurerm_role_assignment" "current" {
 }
 
 #----------------------------------------------------------------------------------------
+# certificate issuer
+#----------------------------------------------------------------------------------------
+
+resource "azurerm_key_vault_certificate_issuer" "issuer" {
+  for_each = {
+    for issuer in local.issuer : "${issuer.kv_key}.${issuer.issuer_key}" => issuer
+  }
+
+  name          = each.value.name
+  org_id        = each.value.org_id
+  key_vault_id  = each.value.key_vault_id
+  provider_name = each.value.provider_name
+  account_id    = each.value.account_id
+  password      = each.value.password //pat certificate authority
+
+  depends_on = [
+    azurerm_role_assignment.current
+  ]
+}
+
+#----------------------------------------------------------------------------------------
 # keys
 #----------------------------------------------------------------------------------------
 

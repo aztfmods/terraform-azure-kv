@@ -11,6 +11,7 @@ The below features and integrations are made available:
 - [keys](examples/keys/main.tf), [secrets](examples/secrets/main.tf), [certs](examples/certs/main.tf) support
 - [terratest](https://terratest.gruntwork.io) is used to validate different integrations
 - [diagnostic](examples/diagnostic-settings/main.tf) logs integration
+- [certificate issuer](examples/cert-issuer/main.tf) support
 
 The below examples shows the usage when consuming the module:
 
@@ -126,6 +127,40 @@ module "kv" {
 }
 ```
 
+## Usage: issuers
+
+```hcl
+module "kv" {
+  source = "../../"
+
+  company = module.global.company
+  env     = module.global.env
+  region  = module.global.region
+
+  vaults = {
+    demo = {
+      location      = module.global.groups.demo.location
+      resourcegroup = module.global.groups.demo.name
+      sku           = "standard"
+
+      enable = {
+        rbac_auth = true
+      }
+
+      issuer = {
+        digicert = {
+          org_id        = "12345"
+          provider_name = "DigiCert"
+          account_id    = "12345"
+          password      = "12345"
+        }
+      }
+    }
+  }
+  depends_on = [module.global]
+}
+```
+
 ## Resources
 
 | Name | Type |
@@ -135,6 +170,7 @@ module "kv" {
 | [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [azurerm_key_vault_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
 | [azurerm_key_vault_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
+| [key_vault_certificate_issuer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate_issuer) | resource |
 
 ## Data Sources
 
