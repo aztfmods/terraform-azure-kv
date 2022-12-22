@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.3.0...v1.4.0) (2022-12-22)
+
+
+### Features
+
+* add azurerm_key_vault_certificate_contacts support ([#32](https://github.com/aztfmods/module-azurerm-kv/issues/32)) ([b927ab6](https://github.com/aztfmods/module-azurerm-kv/commit/b927ab6be15fcab279540d8fa9cb391ef62d8432))
+* add azurerm_key_vault_certificate_issuer support ([#31](https://github.com/aztfmods/module-azurerm-kv/issues/31)) ([827d022](https://github.com/aztfmods/module-azurerm-kv/commit/827d022b23712a91074c5320459f5aaed9e60205))
+* add diagnostics integration ([#29](https://github.com/aztfmods/module-azurerm-kv/issues/29)) ([d98ea92](https://github.com/aztfmods/module-azurerm-kv/commit/d98ea926f86ab27cbe3fdc1ff5a40afbff951a94))
+
 ## [1.3.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.2.0...v1.3.0) (2022-12-06)
 
 
