@@ -1,8 +1,6 @@
 # Keyvault
 
-Azure Key Vault is a cloud-based service that offers a secure and scalable solution for storing and managing cryptographic keys, certificates, and secrets used by cloud applications and services.  
-
-This terraform module simplifies the creation and management of Azure Key Vault resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
+ This terraform module simplifies the creation and management of Azure Key Vault resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
 
 The below features and integrations are made available:
 
