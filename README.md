@@ -1,6 +1,6 @@
 # Keyvault
 
- This terraform module simplifies the creation and management of Azure Key Vault resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
+ This terraform module simplifies the creation and management of azure key vault resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
 
 The below features and integrations are made available:
 
