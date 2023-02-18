@@ -1,17 +1,13 @@
-![example workflow](https://github.com/aztfmods/module-azurerm-kv/actions/workflows/validate.yml/badge.svg)
-![example workflow](https://img.shields.io/github/v/release/aztfmods/module-azurerm-kv)
-
 # Keyvault
 
 Terraform module which creates keyvault resources on Azure.
-
 The below features and integrations are made available:
 
 - multiple keyvaults
-- [keys](examples/keys/main.tf), [secrets](examples/secrets/main.tf), [certs](examples/certs/main.tf) support
-- [terratest](https://terratest.gruntwork.io) is used to validate different integrations
-- [diagnostic](examples/diagnostic-settings/main.tf) logs integration
-- [certificate issuer](examples/cert-issuer/main.tf) support
+- keys, secrets, certs support
+- terratest is used to validate different integrations
+- diagnostic logs integration
+- certificate issuer support
 
 The below examples shows the usage when consuming the module:
 
