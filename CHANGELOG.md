@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.4.0...v1.5.0) (2023-03-08)
+
+
+### Features
+
+* simplify structure and added lifecycle ignore on the inline contact block ([#39](https://github.com/aztfmods/module-azurerm-kv/issues/39)) ([d7978fc](https://github.com/aztfmods/module-azurerm-kv/commit/d7978fcc0b4a8c8780690f5e50d0d90cbf2f24df))
+
 ## [1.4.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.3.0...v1.4.0) (2022-12-22)
 
 
