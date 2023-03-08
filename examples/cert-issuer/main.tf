@@ -21,23 +21,16 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      enable = {
-        rbac_auth = true
-      }
-
-      issuer = {
-        digicert = {
-          org_id        = "12345"
-          provider_name = "DigiCert"
-          account_id    = "12345"
-          password      = "12345"
-        }
+    issuers = {
+      digicert = {
+        org_id        = "12345"
+        provider_name = "DigiCert"
+        account_id    = "12345"
+        password      = "12345"
       }
     }
   }

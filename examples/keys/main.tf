@@ -21,22 +21,15 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      enable = {
-        rbac_auth = true
-      }
-
-      keys = {
-        demo = {
-          key_type = "RSA"
-          key_size = 2048
-          key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
-        }
+    keys = {
+      demo = {
+        key_type = "RSA"
+        key_size = 2048
+        key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
       }
     }
   }

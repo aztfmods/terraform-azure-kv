@@ -41,19 +41,16 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      # network_acls = {
-      #   bypass         = "AzureServices"
-      #   default_action = "Deny"
-      #   ip_rules       = ["1.2.3.4"]
-      #   subnet_ids     = [module.network.subnets["demo.sn1"].id]
-      # }
-    }
+    # network_acls = {
+    #   bypass         = "AzureServices"
+    #   default_action = "Deny"
+    #   ip_rules       = ["1.2.3.4"]
+    #   subnet_ids     = [module.network.subnets["demo.sn1"].id]
+    # }
   }
   depends_on = [module.global]
 }
