@@ -26,7 +26,7 @@ resource "azurerm_key_vault" "keyvault" {
   enabled_for_deployment          = try(var.vault.enable.deployment, true)
   enabled_for_disk_encryption     = try(var.vault.enable.disk_encryption, true)
   enabled_for_template_deployment = try(var.vault.enable.template_deployment, true)
-  purge_protection_enabled        = try(var.vault.enable.purge_protection, false)
+  purge_protection_enabled        = try(var.vault.enable.purge_protection, true)
   enable_rbac_authorization       = try(var.vault.enforce_rbac_auth, true)
   public_network_access_enabled   = try(var.vault.enable.public_network_access, true)
   soft_delete_retention_days      = try(var.vault.retention_in_days, null)
