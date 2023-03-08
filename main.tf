@@ -1,22 +1,10 @@
 data "azurerm_client_config" "current" {}
 
 #----------------------------------------------------------------------------------------
-# resourcegroups
-#----------------------------------------------------------------------------------------
-
-data "azurerm_resource_group" "rg" {
-  for_each = var.vaults
-
-  name = each.value.resourcegroup
-}
-
-#----------------------------------------------------------------------------------------
 # Generate random id
 #----------------------------------------------------------------------------------------
 
 resource "random_string" "random" {
-  for_each = var.vaults
-
   length    = 3
   min_lower = 3
   special   = false
@@ -25,28 +13,26 @@ resource "random_string" "random" {
 }
 
 #----------------------------------------------------------------------------------------
-# keyvaults
+# keyvault
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_key_vault" "keyvault" {
-  for_each = var.vaults
-
-  name                = "kv${var.company}${each.key}${var.env}${var.region}${random_string.random[each.key].result}"
-  resource_group_name = data.azurerm_resource_group.rg[each.key].name
-  location            = data.azurerm_resource_group.rg[each.key].location
+  name                = "kv${var.company}${var.env}${var.region}${random_string.random.result}"
+  resource_group_name = var.vault.resourcegroup
+  location            = var.vault.location
   tenant_id           = data.azurerm_client_config.current.tenant_id
-  sku_name            = each.value.sku
+  sku_name            = try(var.vault.sku, "standard")
 
-  enabled_for_deployment          = try(each.value.enable.deployment, true)
-  enabled_for_disk_encryption     = try(each.value.enable.disk_encryption, true)
-  enabled_for_template_deployment = try(each.value.enable.template_deployment, true)
-  purge_protection_enabled        = try(each.value.enable.purge_protection, false)
-  enable_rbac_authorization       = try(each.value.enable.rbac_auth, false)
-  public_network_access_enabled   = try(each.value.enable.public_network_access, true)
-  soft_delete_retention_days      = try(each.value.retention_in_days, null)
+  enabled_for_deployment          = try(var.vault.enable.deployment, true)
+  enabled_for_disk_encryption     = try(var.vault.enable.disk_encryption, true)
+  enabled_for_template_deployment = try(var.vault.enable.template_deployment, true)
+  purge_protection_enabled        = try(var.vault.enable.purge_protection, false)
+  enable_rbac_authorization       = try(var.vault.enforce_rbac_auth, true)
+  public_network_access_enabled   = try(var.vault.enable.public_network_access, true)
+  soft_delete_retention_days      = try(var.vault.retention_in_days, null)
 
   # dynamic "network_acls" {
-  #   for_each = var.vaults
+  #   for_each = var.vault
   #   # for_each = {
   #   #   for k, v in try(each.value.network_acls, {}) : k => v
   #   # }
@@ -58,6 +44,12 @@ resource "azurerm_key_vault" "keyvault" {
   #     virtual_network_subnet_ids = try(each.value.network_acls.subnet_ids, [])
   #   }
   # }
+
+  lifecycle {
+    ignore_changes = [
+      contact,
+    ]
+  }
 }
 
 #----------------------------------------------------------------------------------------
@@ -65,12 +57,11 @@ resource "azurerm_key_vault" "keyvault" {
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_role_assignment" "current" {
-  for_each = var.vaults
-
-  scope                = azurerm_key_vault.keyvault[each.key].id
+  scope                = azurerm_key_vault.keyvault.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
 }
+
 
 #----------------------------------------------------------------------------------------
 # certificate issuers
@@ -78,7 +69,7 @@ resource "azurerm_role_assignment" "current" {
 
 resource "azurerm_key_vault_certificate_issuer" "issuer" {
   for_each = {
-    for issuer in local.issuer : "${issuer.kv_key}.${issuer.issuer_key}" => issuer
+    for issuer in local.issuers : issuer.issuer_key => issuer
   }
 
   name          = each.value.name
@@ -98,15 +89,11 @@ resource "azurerm_key_vault_certificate_issuer" "issuer" {
 #----------------------------------------------------------------------------------------
 
 resource "azurerm_key_vault_certificate_contacts" "example" {
-  for_each = {
-    for k, v in var.vaults : k => v
-  }
-
-  key_vault_id = azurerm_key_vault.keyvault[each.key].id
+  key_vault_id = azurerm_key_vault.keyvault.id
 
   dynamic "contact" {
     for_each = {
-      for k, v in try(each.value.contacts, {}) : k => v
+      for k, v in try(var.vault.contacts, {}) : k => v
     }
 
     content {
@@ -127,7 +114,7 @@ resource "azurerm_key_vault_certificate_contacts" "example" {
 
 resource "azurerm_key_vault_key" "kv_keys" {
   for_each = {
-    for key in local.keys : "${key.kv_key}.${key.k_key}" => key
+    for key in local.keys : key.k_key => key
   }
 
   name            = each.value.name
@@ -150,7 +137,7 @@ resource "azurerm_key_vault_key" "kv_keys" {
 
 resource "random_password" "password" {
   for_each = {
-    for secret in local.secrets : "${secret.kv_key}.${secret.secret_key}" => secret
+    for secret in local.secrets : secret.secret_key => secret
   }
 
   length      = each.value.length
@@ -163,7 +150,7 @@ resource "random_password" "password" {
 
 resource "azurerm_key_vault_secret" "secret" {
   for_each = {
-    for secret in local.secrets : "${secret.kv_key}.${secret.secret_key}" => secret
+    for secret in local.secrets : secret.secret_key => secret
   }
 
   name         = each.value.name
@@ -181,7 +168,7 @@ resource "azurerm_key_vault_secret" "secret" {
 
 resource "azurerm_key_vault_certificate" "cert" {
   for_each = {
-    for cert in local.certs : "${cert.kv_key}.${cert.cert_key}" => cert
+    for cert in local.certs : cert.cert_key => cert
   }
 
   name         = each.value.name

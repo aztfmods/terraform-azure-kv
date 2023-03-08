@@ -37,7 +37,9 @@ module "kv" {
       }
 
       contacts = {
-        admin = { email = "dennis.kool@cloudnation.nl" }
+        admin = {
+          email = "dennis.kool@cloudnation.nl"
+        }
       }
     }
   }

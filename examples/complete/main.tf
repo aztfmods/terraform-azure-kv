@@ -29,7 +29,39 @@ module "kv" {
       demo = {
         key_type = "RSA"
         key_size = 2048
-        key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+        key_opts = [
+          "decrypt", "encrypt", "sign",
+          "unwrapKey", "verify", "wrapKey"
+        ]
+      }
+    }
+
+    secrets = {
+      example1 = {
+        length = 24
+      }
+
+      example2 = {
+        length  = 24
+        special = false
+      }
+    }
+
+    issuers = {
+      digicert = {
+        org_id     = "12345"
+        provider   = "DigiCert"
+        account_id = "12345"
+        password   = "12345"
+      }
+    }
+
+    certs = {
+      example = {
+        issuer             = "Self"
+        subject            = "CN=app1.demo.org"
+        validity_in_months = 12
+        exportable         = true
       }
     }
 

@@ -21,19 +21,18 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      enable = {
-        rbac_auth = true
-      }
+    secrets = {
+      example1 = { length = 24 }
+      example2 = { length = 24, special = false }
+    }
 
-      secrets = {
-        example1 = { length = 24 }
-        example2 = { length = 24, special = false }
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
       }
     }
   }

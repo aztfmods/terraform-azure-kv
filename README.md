@@ -4,10 +4,8 @@
 
 The below features and integrations are made available:
 
-- multiple keyvaults
 - keys, secrets, certs support
 - terratest is used to validate different integrations
-- diagnostic logs integration
 - certificate issuer support
 
 The below examples shows the usage when consuming the module:
@@ -22,14 +20,17 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location          = module.global.groups.demo.location
-      resourcegroup     = module.global.groups.demo.name
-      sku               = "standard"
-      retention_in_days = 7
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
+  }
+
+  contacts = {
+    admin = {
+      email = "dummy@cloudnation.nl"
     }
   }
+
   depends_on = [module.global]
 }
 ```
@@ -44,19 +45,21 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location          = module.global.groups.demo.location
-      resourcegroup     = module.global.groups.demo.name
-      sku               = "standard"
-      retention_in_days = 7
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      keys = {
-        demo = {
-          key_type = "RSA"
-          key_size = 2048
-          key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
-        }
+    keys = {
+      demo = {
+        key_type = "RSA"
+        key_size = 2048
+        key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+      }
+    }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -74,19 +77,18 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      enable = {
-        rbac_auth = true
-      }
+    secrets = {
+      example1 = { length = 24 }
+      example2 = { length = 24, special = false }
+    }
 
-      secrets = {
-        example1 = { length = 24 }
-        example2 = { length = 24, special = false }
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -116,7 +118,13 @@ module "kv" {
 
       certs = {
         demo = {
-          issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true }
+        issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true }
+      }
+
+      contacts = {
+        admin = {
+          email = "dennis.kool@cloudnation.nl"
+        }
       }
     }
   }
@@ -134,23 +142,22 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      enable = {
-        rbac_auth = true
+    issuers = {
+      digicert = {
+        org_id        = "12345"
+        provider_name = "DigiCert"
+        account_id    = "12345"
+        password      = "12345"
       }
+    }
 
-      issuer = {
-        digicert = {
-          org_id        = "12345"
-          provider_name = "DigiCert"
-          account_id    = "12345"
-          password      = "12345"
-        }
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -174,14 +181,13 @@ module "kv" {
 
 | Name | Type |
 | :-- | :-- |
-| [azurerm_resource_group](https://registry.terraform.io/providers/hashicorp/azurerm/1.39.0/docs/data-sources/resource_group) | datasource |
 | [azurerm_client_config](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | datasource |
 
 ## Inputs
 
 | Name | Description | Type | Required |
 | :-- | :-- | :-- | :-- |
-| `vaults` | describes key vault related configuration | object | yes |
+| `vault` | describes key vault related configuration | object | yes |
 | `company` | contains the company name used, for naming convention  | string | yes |
 | `region` | contains the shortname of the region, used for naming convention  | string | yes |
 | `env` | contains shortname of the environment used for naming convention  | string | yes |
@@ -190,9 +196,8 @@ module "kv" {
 
 | Name | Description |
 | :-- | :-- |
-| `vaults` | contains all key vault config |
-| `vault_keys` | contains all keyvault keys |
-| `merged_ids` | contains all resource id's specified within the module |
+| `vault` | contains all key vault config |
+| `kv_keys` | contains all keyvault keys |
 
 ## Authors
 
