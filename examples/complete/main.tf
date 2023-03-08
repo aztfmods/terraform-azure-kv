@@ -37,14 +37,7 @@ module "kv" {
     }
 
     secrets = {
-      example1 = {
-        length = 24
-      }
-
-      example2 = {
-        length  = 24
-        special = false
-      }
+      example1 = { length = 24, special = false }
     }
 
     issuers = {
