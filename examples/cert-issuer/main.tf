@@ -33,6 +33,12 @@ module "kv" {
         password      = "12345"
       }
     }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
   }
   depends_on = [module.global]
 }

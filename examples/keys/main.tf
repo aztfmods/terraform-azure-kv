@@ -32,6 +32,12 @@ module "kv" {
         key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
       }
     }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
   }
   depends_on = [module.global]
 }

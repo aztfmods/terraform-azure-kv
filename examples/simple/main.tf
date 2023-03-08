@@ -45,6 +45,11 @@ module "kv" {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
 
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
     # network_acls = {
     #   bypass         = "AzureServices"
     #   default_action = "Deny"

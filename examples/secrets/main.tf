@@ -29,6 +29,12 @@ module "kv" {
       example1 = { length = 24 }
       example2 = { length = 24, special = false }
     }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
   }
   depends_on = [module.global]
 }
