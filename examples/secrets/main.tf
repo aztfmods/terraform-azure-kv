@@ -26,8 +26,13 @@ module "kv" {
     resourcegroup = module.global.groups.demo.name
 
     secrets = {
-      example1 = { length = 24 }
-      example2 = { length = 24, special = false }
+      example1 = {
+        length  = 24
+        special = false
+        upper   = false
+        lower   = false
+        number  = false
+      }
     }
 
     contacts = {

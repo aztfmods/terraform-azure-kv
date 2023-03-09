@@ -37,7 +37,13 @@ module "kv" {
     }
 
     secrets = {
-      example1 = { length = 24, special = false }
+      example1 = {
+        length  = 24
+        special = false
+        upper   = false
+        lower   = false
+        number  = false
+      }
     }
 
     issuers = {
@@ -51,10 +57,12 @@ module "kv" {
 
     certs = {
       example = {
-        issuer             = "Self"
-        subject            = "CN=app1.demo.org"
-        validity_in_months = 12
-        exportable         = true
+        issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true
+        key_usage = [
+          "cRLSign", "dataEncipherment",
+          "digitalSignature", "keyAgreement",
+          "keyCertSign", "keyEncipherment"
+        ]
       }
     }
 

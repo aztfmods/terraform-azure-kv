@@ -29,7 +29,10 @@ module "kv" {
       demo = {
         key_type = "RSA"
         key_size = 2048
-        key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+        key_opts = [
+          "decrypt", "encrypt", "sign",
+          "unwrapKey", "verify", "wrapKey"
+        ]
       }
     }
 

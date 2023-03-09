@@ -53,7 +53,10 @@ module "kv" {
       demo = {
         key_type = "RSA"
         key_size = 2048
-        key_opts = ["decrypt", "encrypt", "sign", "unwrapKey", "verify", "wrapKey"]
+        key_opts = [
+          "decrypt", "encrypt", "sign",
+          "unwrapKey", "verify", "wrapKey"
+        ]
       }
     }
 
@@ -82,8 +85,13 @@ module "kv" {
     resourcegroup = module.global.groups.demo.name
 
     secrets = {
-      example1 = { length = 24 }
-      example2 = { length = 24, special = false }
+      example1 = {
+        length  = 24
+        special = false
+        upper   = false
+        lower   = false
+        number  = false
+      }
     }
 
     contacts = {
@@ -110,15 +118,19 @@ module "kv" {
     demo = {
       location      = module.global.groups.demo.location
       resourcegroup = module.global.groups.demo.name
-      sku           = "standard"
-
-      enable = {
-        rbac_auth = true
-      }
 
       certs = {
-        demo = {
-        issuer = "Self", subject = "CN=app1.demo.org", validity_in_months = 12, exportable = true }
+        example = {
+          issuer             = "Self"
+          subject            = "CN=app1.demo.org"
+          validity_in_months = 12
+          exportable         = true
+          key_usage = [
+            "cRLSign", "dataEncipherment",
+            "digitalSignature", "keyAgreement",
+            "keyCertSign", "keyEncipherment"
+          ]
+        }
       }
 
       contacts = {

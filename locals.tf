@@ -59,6 +59,7 @@ locals {
       key_size           = try(cert.key_size, "2048")
       reuse_key          = try(cert.reuse_key, false)
       content_type       = try(cert.content_type, "application/x-pkcs12")
+      key_usage          = cert.key_usage
       subject            = cert.subject
       validity_in_months = cert.validity_in_months
       key_vault_id       = azurerm_key_vault.keyvault.id
