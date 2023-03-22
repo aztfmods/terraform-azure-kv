@@ -50,12 +50,6 @@ module "kv" {
         email = "dummy@cloudnation.nl"
       }
     }
-    # network_acls = {
-    #   bypass         = "AzureServices"
-    #   default_action = "Deny"
-    #   ip_rules       = ["1.2.3.4"]
-    #   subnet_ids     = [module.network.subnets["demo.sn1"].id]
-    # }
   }
   depends_on = [module.global]
 }

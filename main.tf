@@ -31,20 +31,6 @@ resource "azurerm_key_vault" "keyvault" {
   public_network_access_enabled   = try(var.vault.enable.public_network_access, true)
   soft_delete_retention_days      = try(var.vault.retention_in_days, null)
 
-  # dynamic "network_acls" {
-  #   for_each = var.vault
-  #   # for_each = {
-  #   #   for k, v in try(each.value.network_acls, {}) : k => v
-  #   # }
-
-  #   content {
-  #     default_action             = each.value.network_acls.default_action
-  #     bypass                     = each.value.network_acls.bypass
-  #     ip_rules                   = try(each.value.network_acls.ip_rules, [])
-  #     virtual_network_subnet_ids = try(each.value.network_acls.subnet_ids, [])
-  #   }
-  # }
-
   lifecycle {
     ignore_changes = [
       contact,
@@ -149,7 +135,7 @@ resource "azurerm_key_vault_key" "kv_keys" {
 }
 
 #----------------------------------------------------------------------------------------
-# secrets
+# random passwords
 #----------------------------------------------------------------------------------------
 
 resource "random_password" "password" {
