@@ -126,6 +126,23 @@ resource "azurerm_key_vault_key" "kv_keys" {
   not_before_date = each.value.not_before_date
   expiration_date = each.value.expiration_date
 
+  dynamic "rotation_policy" {
+    for_each = try(each.value.rotation_policy, null) != null ? { "default" = each.value.rotation_policy } : {}
+
+    content {
+      expire_after         = try(rotation_policy.value.expire_after, null)
+      notify_before_expiry = try(rotation_policy.value.notify_before_expiry, null)
+
+      dynamic "automatic" {
+        for_each = try(rotation_policy.value.automatic, null) != null ? { "default" = rotation_policy.value.automatic } : {}
+        content {
+          time_after_creation = try(automatic.value.time_after_creation, null)
+          time_before_expiry  = try(automatic.value.time_before_expiry, null)
+        }
+      }
+    }
+  }
+
   depends_on = [
     azurerm_role_assignment.current
   ]
