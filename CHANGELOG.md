@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.5.0...v1.6.0) (2023-03-22)
+
+
+### Features
+
+* add rotation_policy support for keys ([#43](https://github.com/aztfmods/module-azurerm-kv/issues/43)) ([4e20a50](https://github.com/aztfmods/module-azurerm-kv/commit/4e20a50da3a3ed512b50bb9973e3f9e4a8a56784))
+
 ## [1.5.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.4.0...v1.5.0) (2023-03-08)
 
 
