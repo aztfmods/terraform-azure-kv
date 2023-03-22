@@ -33,7 +33,7 @@ locals {
 
 locals {
   secrets = flatten([
-    for secret_key, secret in try(var.vault.secrets, {}) : {
+    for secret_key, secret in try(var.vault.secrets.random_string, {}) : {
 
       secret_key   = secret_key
       name         = secret_key
@@ -43,6 +43,19 @@ locals {
       min_upper    = try(secret.min_upper, 7)
       min_special  = try(secret.min_special, 4)
       min_numeric  = try(secret.min_numeric, 5)
+      key_vault_id = azurerm_key_vault.keyvault.id
+    }
+  ])
+}
+
+locals {
+  tls = flatten([
+    for tls_key, tls in try(var.vault.secrets.tls_public_key, {}) : {
+
+      tls_key      = tls_key
+      algorithm    = tls.algorithm
+      name         = tls_key
+      rsa_bits     = try(tls.rsa_bits, 2048)
       key_vault_id = azurerm_key_vault.keyvault.id
     }
   ])

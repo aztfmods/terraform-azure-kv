@@ -179,6 +179,30 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
+#----------------------------------------------------------------------------------------
+# tls keys
+#----------------------------------------------------------------------------------------
+
+resource "tls_private_key" "tls_key" {
+  for_each = {
+    for key in local.tls : key.tls_key => key
+  }
+
+  algorithm = each.value.algorithm
+  rsa_bits  = each.value.rsa_bits
+}
+
+resource "azurerm_key_vault_secret" "tls_secret" {
+  for_each = {
+    for key in local.tls : key.tls_key => key
+  }
+
+  name         = each.value.name
+  value        = tls_private_key.tls_key[each.key].public_key_pem
+  key_vault_id = each.value.key_vault_id
+}
+
+
 # ----------------------------------------------------------------------------------------
 # certificates
 # ----------------------------------------------------------------------------------------
