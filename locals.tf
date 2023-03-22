@@ -26,6 +26,7 @@ locals {
       not_before_date = try(k.not_before_date, null)
       expiration_date = try(k.expiration_date, null)
       key_vault_id    = azurerm_key_vault.keyvault.id
+      rotation_policy = try(k.rotation_policy, null)
     }
   ])
 }

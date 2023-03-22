@@ -33,6 +33,14 @@ module "kv" {
           "decrypt", "encrypt", "sign",
           "unwrapKey", "verify", "wrapKey"
         ]
+        rotation_policy = {
+          expire_after         = "P90D"
+          notify_before_expiry = "P30D"
+          automatic            = {
+            time_after_creation = "P83D"
+            time_before_expiry  = "P30D"
+          }
+        }
       }
     }
 
