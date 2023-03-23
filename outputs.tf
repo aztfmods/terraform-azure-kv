@@ -11,7 +11,7 @@ output "random_string" {
 }
 
 output "tls_public_key" {
-  value = azurerm_key_vault_secret.tls_secret.value
+  value = azurerm_key_vault_secret.tls_secret
 }
 
 # output "merged_ids" {
