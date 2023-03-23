@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.6.0...v1.7.0) (2023-03-22)
+
+
+### Features
+
+* add tls private key support ([#45](https://github.com/aztfmods/module-azurerm-kv/issues/45)) ([27ff483](https://github.com/aztfmods/module-azurerm-kv/commit/27ff483528fa78f289a5f69487e18f57f1fa98f5))
+
 ## [1.6.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.5.0...v1.6.0) (2023-03-22)
 
 
