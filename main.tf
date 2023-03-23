@@ -184,7 +184,7 @@ resource "azurerm_key_vault_secret" "tls_secret" {
   }
 
   name         = each.value.name
-  value        = tls_private_key.tls_key[each.key].public_key_pem
+  value        = tls_private_key.tls_key[each.key].public_key_openssh
   key_vault_id = each.value.key_vault_id
 
   depends_on = [
