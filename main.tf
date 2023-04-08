@@ -1,9 +1,6 @@
 data "azurerm_client_config" "current" {}
 
-#----------------------------------------------------------------------------------------
-# Generate random id
-#----------------------------------------------------------------------------------------
-
+# generate random id
 resource "random_string" "random" {
   length    = 3
   min_lower = 3
@@ -12,10 +9,7 @@ resource "random_string" "random" {
   upper     = false
 }
 
-#----------------------------------------------------------------------------------------
 # keyvault
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_key_vault" "keyvault" {
   name                = "kv${var.company}${var.env}${var.region}${random_string.random.result}"
   resource_group_name = var.vault.resourcegroup
@@ -38,21 +32,14 @@ resource "azurerm_key_vault" "keyvault" {
   }
 }
 
-#----------------------------------------------------------------------------------------
 # role assignments
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_role_assignment" "current" {
   scope                = azurerm_key_vault.keyvault.id
   role_definition_name = "Key Vault Administrator"
   principal_id         = data.azurerm_client_config.current.object_id
 }
 
-
-#----------------------------------------------------------------------------------------
 # certificate issuers
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_key_vault_certificate_issuer" "issuer" {
   for_each = {
     for issuer in local.issuers : issuer.issuer_key => issuer
@@ -70,10 +57,7 @@ resource "azurerm_key_vault_certificate_issuer" "issuer" {
   ]
 }
 
-#----------------------------------------------------------------------------------------
 # certificate contacts
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_key_vault_certificate_contacts" "example" {
   key_vault_id = azurerm_key_vault.keyvault.id
 
@@ -94,10 +78,7 @@ resource "azurerm_key_vault_certificate_contacts" "example" {
   ]
 }
 
-#----------------------------------------------------------------------------------------
 # keys
-#----------------------------------------------------------------------------------------
-
 resource "azurerm_key_vault_key" "kv_keys" {
   for_each = {
     for key in local.keys : key.k_key => key
@@ -134,10 +115,7 @@ resource "azurerm_key_vault_key" "kv_keys" {
   ]
 }
 
-#----------------------------------------------------------------------------------------
 # random passwords
-#----------------------------------------------------------------------------------------
-
 resource "random_password" "password" {
   for_each = {
     for secret in local.secrets : secret.secret_key => secret
@@ -165,10 +143,7 @@ resource "azurerm_key_vault_secret" "secret" {
   ]
 }
 
-#----------------------------------------------------------------------------------------
 # tls keys
-#----------------------------------------------------------------------------------------
-
 resource "tls_private_key" "tls_key" {
   for_each = {
     for key in local.tls : key.tls_key => key
@@ -193,10 +168,7 @@ resource "azurerm_key_vault_secret" "tls_secret" {
 }
 
 
-# ----------------------------------------------------------------------------------------
 # certificates
-# ----------------------------------------------------------------------------------------
-
 resource "azurerm_key_vault_certificate" "cert" {
   for_each = {
     for cert in local.certs : cert.cert_key => cert
