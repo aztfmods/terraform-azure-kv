@@ -93,12 +93,17 @@ module "kv" {
     resourcegroup = module.global.groups.demo.name
 
     secrets = {
-      example1 = {
-        length  = 24
-        special = false
-        upper   = false
-        lower   = false
-        number  = false
+      random_string = {
+        example1 = {
+          length  = 24
+          special = false
+        }
+      }
+      tls_public_key = {
+        example2 = {
+          algorithm = "RSA"
+          rsa_bits  = 2048
+        }
       }
     }
 
