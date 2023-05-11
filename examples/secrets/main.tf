@@ -15,7 +15,7 @@ module "global" {
 }
 
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
   company = module.global.company
   env     = module.global.env

@@ -21,31 +21,30 @@ module "kv" {
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      certs = {
-        example = {
-          issuer             = "Self"
-          subject            = "CN=app1.demo.org"
-          validity_in_months = 12
-          exportable         = true
-          key_usage = [
-            "cRLSign", "dataEncipherment",
-            "digitalSignature", "keyAgreement",
-            "keyCertSign", "keyEncipherment"
-          ]
-        }
+    certs = {
+      example = {
+        issuer             = "Self"
+        subject            = "CN=app1.demo.org"
+        validity_in_months = 12
+        exportable         = true
+        key_usage = [
+          "cRLSign", "dataEncipherment",
+          "digitalSignature", "keyAgreement",
+          "keyCertSign", "keyEncipherment"
+        ]
       }
+    }
 
-      contacts = {
-        admin = {
-          email = "dennis.kool@cloudnation.nl"
-        }
+    contacts = {
+      admin = {
+        email = "dennis.kool@cloudnation.nl"
       }
     }
   }
   depends_on = [module.global]
 }
+
