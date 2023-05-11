@@ -149,12 +149,9 @@ module "kv" {
         exportable         = true
 
         key_usage = [
-          "cRLSign",
-          "dataEncipherment",
-          "digitalSignature",
-          "keyAgreement",
-          "keyCertSign",
-          "keyEncipherment"
+          "cRLSign", "dataEncipherment",
+          "digitalSignature", "keyAgreement",
+          "keyCertSign", "keyEncipherment"
         ]
       }
     }
