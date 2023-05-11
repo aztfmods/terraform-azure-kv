@@ -167,7 +167,6 @@ resource "azurerm_key_vault_secret" "tls_secret" {
   ]
 }
 
-
 # certificates
 resource "azurerm_key_vault_certificate" "cert" {
   for_each = {

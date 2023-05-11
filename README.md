@@ -23,14 +23,13 @@ module "kv" {
   vault = {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
-  }
 
-  contacts = {
-    admin = {
-      email = "dummy@cloudnation.nl"
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
     }
   }
-
   depends_on = [module.global]
 }
 ```
@@ -49,28 +48,33 @@ module "kv" {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
 
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
+
     keys = {
       demo = {
         key_type = "RSA"
         key_size = 2048
+
         key_opts = [
-          "decrypt", "encrypt", "sign",
-          "unwrapKey", "verify", "wrapKey"
+          "decrypt", "encrypt",
+          "sign", "unwrapKey",
+          "verify", "wrapKey"
         ]
-        rotation_policy = {
-          expire_after         = "P90D"
-          notify_before_expiry = "P30D"
-          automatic            = {
-            time_after_creation = "P83D"
-            time_before_expiry  = "P30D"
+
+        policy = {
+          rotation = {
+            expire_after         = "P90D"
+            notify_before_expiry = "P30D"
+            automatic = {
+              time_after_creation = "P83D"
+              time_before_expiry  = "P30D"
+            }
           }
         }
-      }
-    }
-
-    contacts = {
-      admin = {
-        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -92,6 +96,12 @@ module "kv" {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
 
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
+
     secrets = {
       random_string = {
         example1 = {
@@ -104,12 +114,6 @@ module "kv" {
           algorithm = "RSA"
           rsa_bits  = 2048
         }
-      }
-    }
-
-    contacts = {
-      admin = {
-        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -131,23 +135,27 @@ module "kv" {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
 
+    contacts = {
+      admin = {
+        email = "dennis.kool@cloudnation.nl"
+      }
+    }
+
     certs = {
       example = {
         issuer             = "Self"
         subject            = "CN=app1.demo.org"
         validity_in_months = 12
         exportable         = true
-        key_usage = [
-            "cRLSign", "dataEncipherment",
-            "digitalSignature", "keyAgreement",
-            "keyCertSign", "keyEncipherment"
-        ]
-      }
-    }
 
-    contacts = {
-      admin = {
-        email = "dennis.kool@cloudnation.nl"
+        key_usage = [
+          "cRLSign",
+          "dataEncipherment",
+          "digitalSignature",
+          "keyAgreement",
+          "keyCertSign",
+          "keyEncipherment"
+        ]
       }
     }
   }
@@ -169,18 +177,18 @@ module "kv" {
     location      = module.global.groups.demo.location
     resourcegroup = module.global.groups.demo.name
 
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
+
     issuers = {
       digicert = {
         org_id        = "12345"
         provider_name = "DigiCert"
         account_id    = "12345"
         password      = "12345"
-      }
-    }
-
-    contacts = {
-      admin = {
-        email = "dummy@cloudnation.nl"
       }
     }
   }
