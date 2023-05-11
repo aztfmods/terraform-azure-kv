@@ -5,8 +5,8 @@
 The below features and integrations are made available:
 
 - keys, secrets, certs support
-- terratest is used to validate different integrations
 - certificate issuer support
+- terratest is used to validate different integrations
 
 The below examples shows the usage when consuming the module:
 
@@ -14,7 +14,7 @@ The below examples shows the usage when consuming the module:
 
 ```hcl
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
   company = module.global.company
   env     = module.global.env
@@ -39,7 +39,7 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
   company = module.global.company
   env     = module.global.env
@@ -82,7 +82,7 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
   company = module.global.company
   env     = module.global.env
@@ -116,35 +116,33 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
   company = module.global.company
   env     = module.global.env
   region  = module.global.region
 
-  vaults = {
-    demo = {
-      location      = module.global.groups.demo.location
-      resourcegroup = module.global.groups.demo.name
+  vault = {
+    location      = module.global.groups.demo.location
+    resourcegroup = module.global.groups.demo.name
 
-      certs = {
-        example = {
-          issuer             = "Self"
-          subject            = "CN=app1.demo.org"
-          validity_in_months = 12
-          exportable         = true
-          key_usage = [
+    certs = {
+      example = {
+        issuer             = "Self"
+        subject            = "CN=app1.demo.org"
+        validity_in_months = 12
+        exportable         = true
+        key_usage = [
             "cRLSign", "dataEncipherment",
             "digitalSignature", "keyAgreement",
             "keyCertSign", "keyEncipherment"
-          ]
-        }
+        ]
       }
+    }
 
-      contacts = {
-        admin = {
-          email = "dennis.kool@cloudnation.nl"
-        }
+    contacts = {
+      admin = {
+        email = "dennis.kool@cloudnation.nl"
       }
     }
   }
@@ -190,9 +188,12 @@ module "kv" {
 | Name | Type |
 | :-- | :-- |
 | [azurerm_key_vault](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
+| [azurerm_role_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [random_string](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [random_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [azurerm_key_vault_key](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
+| [tls_private_key](https://registry.terraform.io/providers/hashicorp/tls/latest/docs/resources/private_key) | resource |
+| [azurerm_key_vault_certificate](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate) | resource |
 | [azurerm_key_vault_secret](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_secret) | resource |
 | [key_vault_certificate_issuer](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate_issuer) | resource |
 | [azurerm_key_vault_certificate_contacts](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_certificate_contacts) | resource |
@@ -219,6 +220,11 @@ module "kv" {
 | `vault` | contains all key vault config |
 | `kv_keys` | contains all keyvault keys |
 
+## Testing
+This GitHub repository features a [Makefile](./Makefile) tailored for testing various configurations. Each test target corresponds to different example use cases provided within the repository.
+
+Before running these tests, ensure that both Go and Terraform are installed on your system. To execute a specific test, use the following command ```make <test-target>```
+
 ## Authors
 
 Module is maintained by [Dennis Kool](https://github.com/dkooll) with help from [these awesome contributors](https://github.com/aztfmods/module-azurerm-kv/graphs/contributors).
@@ -229,5 +235,6 @@ MIT Licensed. See [LICENSE](https://github.com/aztfmods/module-azurerm-kv/blob/m
 
 ## References
 
-- [Keyvault Documentation - Microsoft docs](https://learn.microsoft.com/en-us/azure/key-vault/)
-- [Keyvault Rest Api - Microsoft docs](https://learn.microsoft.com/en-us/rest/api/keyvault/)
+- [Documentation](https://learn.microsoft.com/en-us/azure/key-vault/)
+- [Rest Api](https://learn.microsoft.com/en-us/rest/api/keyvault/)
+- [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/tree/1f449b5a17448f05ce1cd914f8ed75a0b568d130/specification/keyvault)
