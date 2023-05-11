@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.7.0...v1.8.0) (2023-05-11)
+
+
+### Features
+
+* refactor tests to make use of shared packages ([#52](https://github.com/aztfmods/module-azurerm-kv/issues/52)) ([10b5621](https://github.com/aztfmods/module-azurerm-kv/commit/10b5621daff490d6ae0115468da5895abfc00e2d))
+* update documentation ([#50](https://github.com/aztfmods/module-azurerm-kv/issues/50)) ([e42a048](https://github.com/aztfmods/module-azurerm-kv/commit/e42a048b977b5804111beea22a716b8f017b650a))
+
 ## [1.7.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.6.0...v1.7.0) (2023-03-22)
 
 
