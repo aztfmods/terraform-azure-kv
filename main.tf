@@ -192,14 +192,7 @@ resource "azurerm_key_vault_certificate" "cert" {
     x509_certificate_properties {
       subject            = each.value.subject
       validity_in_months = each.value.validity_in_months
-      key_usage = [
-        "cRLSign",
-        "dataEncipherment",
-        "digitalSignature",
-        "keyAgreement",
-        "keyCertSign",
-        "keyEncipherment",
-      ]
+      key_usage          = each.value.key_usage
     }
   }
   depends_on = [
