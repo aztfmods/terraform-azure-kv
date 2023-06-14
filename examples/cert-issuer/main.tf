@@ -2,28 +2,34 @@ provider "azurerm" {
   features {}
 }
 
-module "global" {
-  source = "github.com/aztfmods/module-azurerm-global"
+module "region" {
+  source = "github.com/aztfmods/module-azurerm-regions"
 
-  company = "cn"
-  env     = "p"
-  region  = "weu"
+  workload    = var.workload
+  environment = var.environment
 
-  rgs = {
-    demo = { location = "westeurope" }
-  }
+  location = "westeurope"
+}
+
+module "rg" {
+  source = "github.com/aztfmods/module-azurerm-rg"
+
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
+  location       = module.region.location
 }
 
 module "kv" {
   source = "../../"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     issuers = {
       digicert = {
@@ -40,5 +46,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
+
