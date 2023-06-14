@@ -1,19 +1,12 @@
-.PHONY: complete simple secrets keys diagnostic-settings certs cert-isssuer
+.PHONY: test
 
-simple:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/simple ./key_vault_test.go
+export WORKLOAD
+export ENVIRONMENT
+export USECASE
 
-secrets:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/secrets ./key_vault_test.go
+#test_extended:
 
-keys:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/keys ./key_vault_test.go
+test:
+	cd tests && go test -v -timeout 60m -run TestApplyNoError/$(USECASE) ./key_vault_test.go
 
-certs:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/certs ./key_vault_test.go
-
-cert-issuer:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/cert-issuer ./key_vault_test.go
-
-diagnostic-settings:
-	cd tests && go test -v -timeout 60m -run TestApplyNoError/diagnostic-settings ./key_vault_test.go
+#test_local:
