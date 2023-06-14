@@ -42,7 +42,7 @@ module "kv" {
         rotation_policy = {
           expire_after         = "P90D"
           notify_before_expiry = "P30D"
-          automatic            = {
+          automatic = {
             time_after_creation = "P83D"
             time_before_expiry  = "P30D"
           }
@@ -76,10 +76,10 @@ module "kv" {
 
     certs = {
       example = {
-        issuer = "Self"
-        subject = "CN=app1.demo.org"
+        issuer             = "Self"
+        subject            = "CN=app1.demo.org"
         validity_in_months = 12
-        exportable = true
+        exportable         = true
         key_usage = [
           "cRLSign", "dataEncipherment",
           "digitalSignature", "keyAgreement",
