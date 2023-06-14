@@ -4,7 +4,7 @@
 
 The below features and integrations are made available:
 
-- keys, secrets, certs support
+- keys, secrets, certificate support
 - certificate issuer support
 - terratest is used to validate different integrations
 
@@ -16,13 +16,13 @@ The below examples shows the usage when consuming the module:
 module "kv" {
   source = "github.com/aztfmods/module-azurerm-kv"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     contacts = {
       admin = {
@@ -30,7 +30,7 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
 ```
 
@@ -40,13 +40,13 @@ module "kv" {
 module "kv" {
   source = "github.com/aztfmods/module-azurerm-kv"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     contacts = {
       admin = {
@@ -78,7 +78,7 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
 ```
 
@@ -88,13 +88,13 @@ module "kv" {
 module "kv" {
   source = "github.com/aztfmods/module-azurerm-kv"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     contacts = {
       admin = {
@@ -117,7 +117,7 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
 ```
 
@@ -127,13 +127,13 @@ module "kv" {
 module "kv" {
   source = "github.com/aztfmods/module-azurerm-kv"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     contacts = {
       admin = {
@@ -156,7 +156,7 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
 ```
 
@@ -164,15 +164,15 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/module-azurerm-kv"
 
-  company = module.global.company
-  env     = module.global.env
-  region  = module.global.region
+  workload       = var.workload
+  environment    = var.environment
+  location_short = module.region.location_short
 
   vault = {
-    location      = module.global.groups.demo.location
-    resourcegroup = module.global.groups.demo.name
+    location      = module.rg.group.location
+    resourcegroup = module.rg.group.name
 
     contacts = {
       admin = {
@@ -189,7 +189,7 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.global]
+  depends_on = [module.rg]
 }
 ```
 
@@ -219,9 +219,9 @@ module "kv" {
 | Name | Description | Type | Required |
 | :-- | :-- | :-- | :-- |
 | `vault` | describes key vault related configuration | object | yes |
-| `company` | contains the company name used, for naming convention  | string | yes |
-| `region` | contains the shortname of the region, used for naming convention  | string | yes |
-| `env` | contains shortname of the environment used for naming convention  | string | yes |
+| `workload` | contains the workload name used, for naming convention  | string | yes |
+| `location_short` | contains the shortname of the region, used for naming convention  | string | yes |
+| `environment` | contains shortname of the environment used for naming convention  | string | yes |
 
 ## Outputs
 
@@ -237,7 +237,7 @@ Before running these tests, ensure that both Go and Terraform are installed on y
 
 ## Authors
 
-Module is maintained by [Dennis Kool](https://github.com/dkooll) with help from [these awesome contributors](https://github.com/aztfmods/module-azurerm-kv/graphs/contributors).
+Module is maintained by [Dennis Kool](https://github.com/dkooll)
 
 ## License
 
