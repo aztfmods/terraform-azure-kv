@@ -3,7 +3,7 @@ locals {
     for issuer_key, issuer in try(var.vault.issuers, {}) : {
 
       issuer_key    = issuer_key
-      name          = "issuer-${var.workload}-${issuer_key}-${var.environment}-${var.location_short}"
+      name          = "issuer-${var.workload}-${issuer_key}-${var.environment}"
       key_vault_id  = azurerm_key_vault.keyvault.id
       provider_name = issuer.provider
       account_id    = try(issuer.account_id, null)
