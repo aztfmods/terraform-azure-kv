@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/aztfmods/terraform-azure-kv/compare/v1.8.0...v1.9.0) (2023-07-03)
+
+
+### Features
+
+* **deps:** bump github.com/gruntwork-io/terratest in /tests ([#57](https://github.com/aztfmods/terraform-azure-kv/issues/57)) ([ad806d7](https://github.com/aztfmods/terraform-azure-kv/commit/ad806d785c453128e689b45a1a9c161d400c6878))
+
 ## [1.8.0](https://github.com/aztfmods/module-azurerm-kv/compare/v1.7.0...v1.8.0) (2023-05-11)
 
 
