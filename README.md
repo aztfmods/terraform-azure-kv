@@ -2,11 +2,19 @@
 
  This terraform module simplifies the creation and management of azure key vault resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
 
-The below features and integrations are made available:
+## Goals
 
-- keys, secrets, certificate support
-- certificate issuer support
-- terratest is used to validate different integrations
+The main objective is to create a more logic data structure, achieved by combining and grouping related resources together in a complex object.
+
+The structure of the module promotes reusability. It's intended to be a repeatable component, simplifying the process of building diverse workloads and platform accelerators consistently.
+
+A primary goal is to utilize keys and values in the object that correspond to the REST API's structure. This enables us to carry out iterations, increasing its practical value as time goes on.
+
+## Features
+
+- capability to handle keys, secrets, and certificates.
+- includes support for certificate issuers.
+- utilization of terratest for robust validation.
 
 The below examples shows the usage when consuming the module:
 
@@ -14,15 +22,14 @@ The below examples shows the usage when consuming the module:
 
 ```hcl
 module "kv" {
-  source = "github.com/aztfmods/module-azurerm-kv"
+  source = "github.com/aztfmods/terraform-azure-kv?ref=v1.8.0"
 
-  workload       = var.workload
-  environment    = var.environment
-  location_short = module.region.location_short
+  workload    = var.workload
+  environment = var.environment
 
   vault = {
-    location      = module.rg.group.location
-    resourcegroup = module.rg.group.name
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
     contacts = {
       admin = {
@@ -38,15 +45,14 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "github.com/aztfmods/module-azurerm-kv"
+  source = "github.com/aztfmods/terraform-azure-kv?ref=v1.8.0"
 
-  workload       = var.workload
-  environment    = var.environment
-  location_short = module.region.location_short
+  workload    = var.workload
+  environment = var.environment
 
   vault = {
-    location      = module.rg.group.location
-    resourcegroup = module.rg.group.name
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
     contacts = {
       admin = {
@@ -86,21 +92,14 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "github.com/aztfmods/module-azurerm-kv"
+  source = "github.com/aztfmods/module-azurerm-kv?ref=v1.8.0"
 
-  workload       = var.workload
-  environment    = var.environment
-  location_short = module.region.location_short
+  workload    = var.workload
+  environment = var.environment
 
   vault = {
-    location      = module.rg.group.location
-    resourcegroup = module.rg.group.name
-
-    contacts = {
-      admin = {
-        email = "dummy@cloudnation.nl"
-      }
-    }
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
     secrets = {
       random_string = {
@@ -116,6 +115,12 @@ module "kv" {
         }
       }
     }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
+      }
+    }
   }
   depends_on = [module.rg]
 }
@@ -125,34 +130,34 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "github.com/aztfmods/module-azurerm-kv"
+  source = "github.com/aztfmods/terraform-azure-kv?ref=v1.8.0"
 
-  workload       = var.workload
-  environment    = var.environment
-  location_short = module.region.location_short
+  workload    = var.workload
+  environment = var.environment
 
   vault = {
-    location      = module.rg.group.location
-    resourcegroup = module.rg.group.name
+    demo = {
+      location      = module.rg.groups.demo.location
+      resourcegroup = module.rg.groups.demo.name
 
-    contacts = {
-      admin = {
-        email = "dennis.kool@cloudnation.nl"
+      certs = {
+        example = {
+          issuer             = "Self"
+          subject            = "CN=app1.demo.org"
+          validity_in_months = 12
+          exportable         = true
+          key_usage = [
+            "cRLSign", "dataEncipherment",
+            "digitalSignature", "keyAgreement",
+            "keyCertSign", "keyEncipherment"
+          ]
+        }
       }
-    }
 
-    certs = {
-      example = {
-        issuer             = "Self"
-        subject            = "CN=app1.demo.org"
-        validity_in_months = 12
-        exportable         = true
-
-        key_usage = [
-          "cRLSign", "dataEncipherment",
-          "digitalSignature", "keyAgreement",
-          "keyCertSign", "keyEncipherment"
-        ]
+      contacts = {
+        admin = {
+          email = "dennis.kool@cloudnation.nl"
+        }
       }
     }
   }
@@ -164,21 +169,14 @@ module "kv" {
 
 ```hcl
 module "kv" {
-  source = "github.com/aztfmods/module-azurerm-kv"
+  source = "github.com/aztfmods/terraform-azure-kv?ref=v1.8.0"
 
-  workload       = var.workload
-  environment    = var.environment
-  location_short = module.region.location_short
+  workload    = var.workload
+  environment = var.environment
 
   vault = {
-    location      = module.rg.group.location
-    resourcegroup = module.rg.group.name
-
-    contacts = {
-      admin = {
-        email = "dummy@cloudnation.nl"
-      }
-    }
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
     issuers = {
       digicert = {
@@ -186,6 +184,12 @@ module "kv" {
         provider_name = "DigiCert"
         account_id    = "12345"
         password      = "12345"
+      }
+    }
+
+    contacts = {
+      admin = {
+        email = "dummy@cloudnation.nl"
       }
     }
   }
@@ -220,7 +224,6 @@ module "kv" {
 | :-- | :-- | :-- | :-- |
 | `vault` | describes key vault related configuration | object | yes |
 | `workload` | contains the workload name used, for naming convention  | string | yes |
-| `location_short` | contains the shortname of the region, used for naming convention  | string | yes |
 | `environment` | contains shortname of the environment used for naming convention  | string | yes |
 
 ## Outputs
@@ -231,17 +234,26 @@ module "kv" {
 | `kv_keys` | contains all keyvault keys |
 
 ## Testing
-This GitHub repository features a [Makefile](./Makefile) tailored for testing various configurations. Each test target corresponds to different example use cases provided within the repository.
 
-Before running these tests, ensure that both Go and Terraform are installed on your system. To execute a specific test, use the following command ```make <test-target>```
+The github repository utilizes a Makefile to conduct tests to evaluate and validate different configurations of the module. These tests are designed to enhance its stability and reliability.
+
+Before initiating the tests, please ensure that both go and terraform are properly installed on your system.
+
+The [Makefile](Makefile) incorporates three distinct test variations. The first one, a local deployment test, is designed for local deployments and allows the overriding of workload and environment values. It includes additional checks and can be initiated using the command ```make test_local```.
+
+The second variation is an extended test. This test performs additional validations and serves as the default test for the module within the github workflow.
+
+The third variation allows for specific deployment tests. By providing a unique test name in the github workflow, it overrides the default extended test, executing the specific deployment test instead.
+
+Each of these tests contributes to the robustness and resilience of the module. They ensure the module performs consistently and accurately under different scenarios and configurations.
 
 ## Authors
 
-Module is maintained by [Dennis Kool](https://github.com/dkooll)
+Module is maintained by [Dennis Kool](https://github.com/dkooll).
 
 ## License
 
-MIT Licensed. See [LICENSE](https://github.com/aztfmods/module-azurerm-kv/blob/main/LICENSE) for full details.
+MIT Licensed. See [LICENSE](https://github.com/aztfmods/terraform-azure-kv/blob/main/LICENSE) for full details.
 
 ## References
 
