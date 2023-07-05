@@ -2,20 +2,8 @@ provider "azurerm" {
   features {}
 }
 
-module "global" {
-  source = "github.com/aztfmods/module-azurerm-global"
-
-  company = "cn"
-  env     = "p"
-  region  = "weu"
-
-  rgs = {
-    demo = { location = "westeurope" }
-  }
-}
-
 module "logging" {
-  source = "github.com/aztfmods/module-azurerm-law"
+  source = "github.com/aztfmods/module-azurerm-law?ref=v0.0.1"
 
   company = module.global.company
   env     = module.global.env
@@ -33,7 +21,7 @@ module "logging" {
 }
 
 module "kv" {
-  source = "../../"
+  source = "github.com/aztfmods/terraform-azure-kv?ref=v1.8.0"
 
   company = module.global.company
   env     = module.global.env
@@ -50,7 +38,7 @@ module "kv" {
 }
 
 module "diagnostic_settings" {
-  source = "github.com/aztfmods/module-azurerm-diags"
+  source = "github.com/aztfmods/module-azurerm-diags?ref=v0.0.1"
   count  = length(module.kv.merged_ids)
 
   resource_id           = element(module.kv.merged_ids, count.index)
