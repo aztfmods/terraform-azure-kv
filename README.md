@@ -10,6 +10,8 @@ The structure of the module promotes reusability. It's intended to be a repeatab
 
 A primary goal is to utilize keys and values in the object that correspond to the REST API's structure. This enables us to carry out iterations, increasing its practical value as time goes on.
 
+A last key goal is to separate logic from configuration in the module, thereby enhancing its scalability, ease of customization, and manageability.
+
 ## Features
 
 - capability to handle keys, secrets, and certificates.
@@ -37,7 +39,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -84,7 +85,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -122,7 +122,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -161,7 +160,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 
@@ -193,7 +191,6 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
 ```
 

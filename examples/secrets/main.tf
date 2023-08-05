@@ -45,5 +45,4 @@ module "kv" {
       }
     }
   }
-  depends_on = [module.rg]
 }
