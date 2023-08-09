@@ -168,7 +168,7 @@ resource "azurerm_key_vault_secret" "tls_secret" {
 }
 
 # certificates
-resource "azurerm_key_vault_certificate" "cert" {
+resource "azurerm_key_vault_certificate" "certs" {
   for_each = {
     for cert in local.certs : cert.cert_key => cert
   }
