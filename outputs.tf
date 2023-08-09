@@ -14,6 +14,6 @@ output "tls_public_key" {
   value = azurerm_key_vault_secret.tls_secret
 }
 
-# output "merged_ids" {
-#   value = values(azurerm_key_vault.keyvault)[*].id
-# }
+output "certs" {
+  value = azurerm_key_vault_certificate.certs
+}
