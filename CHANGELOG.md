@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.10.0](https://github.com/aztfmods/terraform-azure-kv/compare/v1.9.0...v1.10.0) (2023-08-09)
+
+
+### Features
+
+* add certificate output ([#66](https://github.com/aztfmods/terraform-azure-kv/issues/66)) ([4d0456d](https://github.com/aztfmods/terraform-azure-kv/commit/4d0456d3b515dd2a7a7e75fb1ad5676f329fc5e3))
+* **deps:** Bump github.com/gruntwork-io/terratest from 0.43.6 to 0.43.11 in /tests ([#64](https://github.com/aztfmods/terraform-azure-kv/issues/64)) ([78d487a](https://github.com/aztfmods/terraform-azure-kv/commit/78d487a168c77b63c82e474e40fe6ecb7d43fe32))
+* **deps:** Bump google.golang.org/grpc from 1.51.0 to 1.53.0 in /tests ([#61](https://github.com/aztfmods/terraform-azure-kv/issues/61)) ([b46a8e0](https://github.com/aztfmods/terraform-azure-kv/commit/b46a8e049bc3c2603924efc927e8bcff9a8f91ce))
+
 ## [1.9.0](https://github.com/aztfmods/terraform-azure-kv/compare/v1.8.0...v1.9.0) (2023-07-05)
 
 
