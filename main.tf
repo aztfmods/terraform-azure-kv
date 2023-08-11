@@ -52,9 +52,9 @@ resource "azurerm_key_vault_certificate_issuer" "issuer" {
   account_id    = each.value.account_id
   password      = each.value.password //pat certificate authority
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #  depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
 
 # certificate contacts
@@ -73,9 +73,9 @@ resource "azurerm_key_vault_certificate_contacts" "example" {
     }
   }
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
 
 # keys
@@ -110,9 +110,9 @@ resource "azurerm_key_vault_key" "kv_keys" {
     }
   }
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #  depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
 
 # random passwords
@@ -138,9 +138,9 @@ resource "azurerm_key_vault_secret" "secret" {
   value        = random_password.password[each.key].result
   key_vault_id = each.value.key_vault_id
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #  depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
 
 # tls keys
@@ -162,9 +162,9 @@ resource "azurerm_key_vault_secret" "tls_secret" {
   value        = tls_private_key.tls_key[each.key].public_key_openssh
   key_vault_id = each.value.key_vault_id
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #  depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
 
 # certificates
@@ -195,7 +195,7 @@ resource "azurerm_key_vault_certificate" "certs" {
       key_usage          = each.value.key_usage
     }
   }
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
+  #depends_on = [
+  #  azurerm_role_assignment.current
+  #]
 }
