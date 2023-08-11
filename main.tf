@@ -33,11 +33,11 @@ resource "azurerm_key_vault" "keyvault" {
 }
 
 # role assignments
-resource "azurerm_role_assignment" "current" {
-  scope                = azurerm_key_vault.keyvault.id
-  role_definition_name = "Key Vault Administrator"
-  principal_id         = var.vault.principal_id
-}
+#resource "azurerm_role_assignment" "current" {
+#  scope                = azurerm_key_vault.keyvault.id
+#  role_definition_name = "Key Vault Administrator"
+#  principal_id         = var.vault.principal_id
+#}
 
 # certificate issuers
 resource "azurerm_key_vault_certificate_issuer" "issuer" {
