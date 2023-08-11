@@ -3,7 +3,7 @@ provider "azurerm" {
 }
 
 module "rg" {
-  source = "github.com/aztfmods/terraform-azure-rg?ref=v0.0.1"
+  source = "github.com/aztfmods/terraform-azure-rg?ref=v0.1.0"
 
   environment = var.environment
 
@@ -21,28 +21,26 @@ module "kv" {
   environment = var.environment
 
   vault = {
-    demo = {
-      location      = module.rg.groups.demo.location
-      resourcegroup = module.rg.groups.demo.name
+    location      = module.rg.groups.demo.location
+    resourcegroup = module.rg.groups.demo.name
 
-      certs = {
-        example = {
-          issuer             = "Self"
-          subject            = "CN=app1.demo.org"
-          validity_in_months = 12
-          exportable         = true
-          key_usage = [
-            "cRLSign", "dataEncipherment",
-            "digitalSignature", "keyAgreement",
-            "keyCertSign", "keyEncipherment"
-          ]
-        }
+    certs = {
+      example = {
+        issuer             = "Self"
+        subject            = "CN=app1.demo.org"
+        validity_in_months = 12
+        exportable         = true
+        key_usage = [
+          "cRLSign", "dataEncipherment",
+          "digitalSignature", "keyAgreement",
+          "keyCertSign", "keyEncipherment"
+        ]
       }
+    }
 
-      contacts = {
-        admin = {
-          email = "dennis.kool@cloudnation.nl"
-        }
+    contacts = {
+      admin = {
+        email = "dennis.kool@cloudnation.nl"
       }
     }
   }
