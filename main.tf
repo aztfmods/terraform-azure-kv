@@ -25,10 +25,6 @@ resource "azurerm_key_vault" "keyvault" {
   public_network_access_enabled   = try(var.vault.enable.public_network_access, true)
   soft_delete_retention_days      = try(var.vault.retention_in_days, null)
 
-  depends_on = [
-    azurerm_role_assignment.current
-  ]
-
   lifecycle {
     ignore_changes = [
       contact,
